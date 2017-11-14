@@ -64,7 +64,7 @@
 									<li>prediction-based (NN-based)</li>
 								</ul>
 							</li>
-							<li>Neural network language models</li>
+							<li>NN-based language models</li>
 							<li>Word2vec
 								<ul>
 									<li>Context window</li>
@@ -80,37 +80,30 @@
 											<li>Negative Sampling</li>
 										</ul>
 									</li>
-									<!--
 									<li>Other optimizations
 										<ul>
 											<li>random window length, multiword terms, infrequent terms removal, frequent terms undersampling.</li>
 										</ul>
 									</li>
-									-->
 								</ul>
 							</li>
-							<li>Implementation</li>
 							<li>Limitations</li>
-							<li>Extensions
-								<ul>
-									<li>Doc2vec</li>
-									<li>FastText</li>
-								</ul>
-							</li>
+							<li>Extensions</li>
 						</ul>
+
 				</section>
 				<section>
-					<h3>Word Embeddings</h3>
+					<h3>Introduction</h3>
+						<div>
+							<p>The <span style="color:red">cat</span> is <span style="color:blue">walking</span> in the <span style="color:green">bedroom</span></p>
+							<p>A <span style="color:red">dog</span> was <span style="color:blue">running</span> in a <span style="color:green">room</span></p>
+						</div>
 						<ul>
 							<li>Analogy tasks: Paris is to France as Berlin is to <i>what</i>?</li>
-							<li>Find the word that does not fit: <br>
+							<li>Find the word that does not match: <br>
 								<i>dinner cereal breakfast lunch</i>
 							</li>
 						</ul>
-				</section>
-				<section>
-					<h3>Word Embeddings</h3>
-					<img height="100%" width="100%" data-src="./images/word_embeddings.png" alt="Word Embeddings" style="border:none; box-shadow:none;" />
 				</section>
 				<section>
 					<h3>Applications</h3>
@@ -119,13 +112,13 @@
 				</section>
 				<section>
 					<h3>Applications</h3>
-					<img height="100%" width="100%" data-src="./images/mikolov_analogies.png" alt="Analogy tasks (Mikolov)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Efficient Estimation of Word Representations in Vector Space (Mikolov 2013)</p>
+					<img height="100%" width="100%" data-src="./images/collobert_table.png" alt="Most related words (Collobert)" style="border:none; box-shadow:none;" />
+					<p style="font-size:50%">Natural Language Processing (almost) from Scratch (Collobert and Weston 2011)</p>
 				</section>
 				<section>
 					<h3>Applications</h3>
-					<img height="100%" width="100%" data-src="./images/collobert_table.png" alt="Most related words (Collobert)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Natural Language Processing (almost) from Scratch (Collobert and Weston 2011)</p>
+					<img height="100%" width="100%" data-src="./images/mikolov_analogies.png" alt="Analogy tasks (Mikolov)" style="border:none; box-shadow:none;" />
+					<p style="font-size:50%">Efficient Estimation of Word Representations in Vector Space (Mikolov 2013)</p>
 				</section>
 				<section>
 					<h3>Applications</h3>
@@ -137,63 +130,7 @@
 					<img height="70%" width="70%" data-src="./images/socher_image_embeddings.png" alt="Embeddings for image classification (Socher)" style="border:none; box-shadow:none;" />
 					<p style="font-size:50%">Zero-Shot Learning Through Cross-Modal Transfer (Socher 2013)</p>
 				</section>
-				<!--
 				<section data-background-iframe="https://rare-technologies.com/word2vec-tutorial/#bonus_app">
-				-->
-				<section>
-					<h3>Bag-of-words, TF-IDF and LSA</h3>
-					<!--<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6ce07d37d7cc1057be2b032cccc5cf580945af9"-->
-					<img data-src="./images/lsa.svg" alt="Latent Semantic Analysis" style="border:none; box-shadow:none;" />
-					<div style="font-size:60%">
-						<p>$x_{i,j} = TFIDF(t_i, d_j)$</p>
-						<p>$TFIDF(t_i, d_j) = TF(t_i, d_j) ⋅ IDF(t_i, d_j)$</p>
-						<p>$TF(t_i, d_j) = \frac{freq(t_i, d_j)}{|d_j|}$</p>
-						<p>$IDF(t_i, d_j) = log(\frac{|D|}{|\{d_k : t_i ∈ d_k\}|})$</p>
-				</div>
-				</section>
-				<section>
-					<h3>Bag-of-words and TF-IDF</h3>
-					<div style="text-align:left; padding: 0% 10% 0% 20%;font-size: 80%">
-						<p>Doc1 = "He is a lazy boy. She is also lazy." </p>
-						<p>Doc2 = "John is a lazy person." </p>
-					</div>
-					<div>
-						<div style="font-size:50%;display:inline-block;margin-right:10%">
-							<p>Raw frequencies</p>
-							<table>
-								<tr><td></td><td>Doc1</td><td>Doc2</td></tr>
-								<tr><td>a</td><td>1</td><td>1</td></tr>
-								<tr><td>also</td><td>1</td><td>0</td></tr>
-								<tr><td>boy</td><td>1</td><td>0</td></tr>
-								<tr><td>he</td><td>1</td><td>0</td></tr>
-								<tr><td>is</td><td>2</td><td>1</td></tr>
-								<tr><td>john</td><td>0</td><td>1</td></tr>
-								<tr><td>lazy</td><td>2</td><td>1</td></tr>
-								<tr><td>person</td><td>0</td><td>1</td></tr>
-								<tr><td>she</td><td>1</td><td>0</td></tr>
-							</table>
-						</div>
-						<div style="font-size:50%;display:inline-block">
-							<p>TF-IDF</p>
-							<table >
-								<tr><td></td><td>Doc1</td><td>Doc2</td></tr>
-								<tr><td>a</td><td>0</td><td>0</td></tr>
-								<tr><td>also</td><td>0.077</td><td>0</td></tr>
-								<tr><td>boy</td><td>0.077</td><td>0</td></tr>
-								<tr><td>he</td><td>0.077</td><td>0</td></tr>
-								<tr><td>is</td><td>0</td><td>0</td></tr>
-								<tr><td>john</td><td>0</td><td>0.138</td></tr>
-								<tr><td>lazy</td><td>0</td><td>0</td></tr>
-								<tr><td>person</td><td>0</td><td>0.138</td></tr>
-								<tr><td>she</td><td>0.077</td><td>0</td></tr>
-							</table>
-						</div>
-					</div>
-				</section>
-				<section>
-					<h3>Latent Semantic Analysis: decomposition through SVD</h3>
-					<img data-src="./images/svd.png" alt="Singular Value Decomposition" style="border:none; box-shadow:none;" />
-				</section>
 				</section>
 				<section>
 					<h3>Language models</h3>
@@ -203,20 +140,26 @@
 					<p>$$ P(W_{i+1} | {W_{i-n}, ..., W_{i-1}, W_i}), W_j \in V, j \in \mathbb{N} $$</p>
 				</section>
 				<section>
-					<h3>Distributional hypothesis</h3>
-					<div>
-						<p>The <span style="color:red">cat</span> is <span style="color:blue">walking</span> in the <span style="color:green">bedroom</span></p>
-						<p>A <span style="color:red">dog</span> was <span style="color:blue">running</span> in a <span style="color:green">room</span></p>
-					</div>
-				</section>
-				<section>
 					<h3>Count-based language models</h3>
 					<ul>
 						<li>N-grams</li>
 						<li>co-occurrence count on training set</li>
 						<li>Probability smoothing</li>
+						<br>
 						<li>The amount of data required grows exponentially with the size of the context</li>
+						<li>These models do not capture semantic relationships between terms</li>
 					</ul>
+				</section>
+				<section>
+					<h3>Latent Semantic Analysis</h3>
+					<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6ce07d37d7cc1057be2b032cccc5cf580945af9"
+					alt="Latent Semantic Analysis" style="border:none; box-shadow:none;" />
+					<div style="font-size:60%">
+						<p>$x_{i,j} = tfidf(t_i, d_j)$</p>
+						<p>$tfidf(t_i, d_j) = tf(t_i, d_j) ⋅ idf(t_i, d_j)$</p>
+						<p>$tf(t_i, d_j) = \frac{freq(t_i, d_j)}{|d_j|}$</p>
+						<p>$idf(t_i, d_j) = log(\frac{|D|}{|\{d_k : t_i ∈ d_k\}|})$</p>
+				</div>
 				</section>
 				<section>
 					<h3>Neural network language models</h3>
@@ -225,6 +168,19 @@
 						<li>Embeddings are represented by the activation pattern of the hidden layer as a whole</li>
 						<li>Words with similar meanings are represented by vectors that are close in the high-dimensional space</li>
 					</ul>
+				</section>
+				<section>
+					<h3>Neural network language models</h3>
+					<img height="50%" width="50%" data-src="./images/bengio2003.png" alt="Bengio 2003 model" style="border:none; box-shadow:none;" />
+					<p style="font-size:30px">A Neural Probabilistic Language Model (Bengio 2003)</p>
+				</section>
+				<section>
+					<h3>Neural network language models</h3>
+					<p>Output probabilities are modeled using the <i>softmax</i> function</p>
+					<p>$x = [x_1, x_2, ..., x_n]$</p>
+					<p>$$softmax(x_i) = \frac{e^{x_i}}{\sum_{j}{e^{x_j}}}$$</p>
+					<p>Cross-entropy is used as loss</p>
+					<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
 				</section>
 				<section>
 					<h3>Neural network language models</h3>
@@ -244,13 +200,47 @@
 					<img data-src="./images/word2vec_layout.png" alt="Word2vec neural network" style="border:none; box-shadow:none;" />
 				</section>
 				<section>
-					<h3>Word2vec</h3>
-					<img height="100%" width="100%" data-src="./images/mat_mult2.png" alt="One-hot matrix multiplication" style="border:none; box-shadow:none;" />
-				</section>
-				<section data-background-iframe="http://ronxin.github.io/wevi/"></section>
-				<section>
 					<h3>Sliding window</h3>
 					<img height="60%" width="60%" data-src="./images/sliding_window.png" alt="Word2vec sliding window" style="border:none; box-shadow:none;" />
+				</section>
+				<section>
+					<h3>Word2vec</h3>
+					<p>Given an input word $W_i$ and an output word $W_j$,</p>
+					<p>let $x$ be the one-hot representation for $W_I$</p>
+					<p>$x = [x_1, x_2, ..., x_k, ...,x_V], x_k = 1, x_n = 0, n \neq k$</p>
+					<p>$t = [t_1, t_2, ..., t_j, ...,t_V]$</p>
+					<p>$t_j = 1$ if $W_j$ is in the context of $W_I$,</p>
+					<p>$t_n = 0$ otherwise, $n \neq j$</p>
+				</section>
+				<section>
+					<h3>Word2vec</h3>
+					<p>activation $h = x^TW = W_{(k, :)} := v_{w_i}$</p>
+					<p>score $u_j = {v'}_{w_j}^{T} ⋅ h$, where ${v'}_{w_j}^{T} = {W'}_{(:,j)}$</p>
+					<p>$P(w_j | w_i) = y_j = \frac{exp(u_j)}{\sum_{j'=1}^{V}{exp(u_{j'})}}$</p>
+				</section>
+				<section>
+					<h3>Word2vec</h3>
+					<p>Output probabilities are modeled using the <i>softmax</i> function</p>
+					<p>$x = [x_1, x_2, ..., x_n]$</p>
+					<p>$$softmax(x_i) = \frac{e^{x_i}}{\sum_{j}{e^{x_j}}}$$</p>
+					<p>Cross-entropy is used as loss</p>
+					<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
+				</section>
+				<section>
+					<h3>Word2vec, update rule for output layer (conceptual)</h3>
+					<p>$ E = -log(p(W_j | W_i))$</p>
+					<p>$\frac{∂E}{∂u_j} = y_j - t_j := e$,</p>
+					<p>where $t_j = 1$ for the correct word, $t_j = 0$ otherwise</p>
+					<p>$\frac{∂E}{∂{w'}_{ij}} = \frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂{w'}_{ij}} = e_j ⋅ h_i$</p>
+					<p>${v'}_{w_j}^{new} = {v'}_{w_j}^{old} - η ⋅ e_j ⋅ \textbf{h}$, for $j = 1,2,...,V$</p>
+				</section>
+				<section>
+					<h3>Word2vec, update rule for hidden layer (conceptual)</h3>
+					<p>$\frac{∂E}{∂h_i} = \sum_{j=1}^{V}{\frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂h_i}} = \sum_{j=1}^{V}{e_j ⋅ w'_{ij}} := EH_i$</p>
+					<p>$h_i = \sum_{k=1}^{V}{x_k ⋅ w_{ki}}$</p>
+					<p>$\frac{∂E}{∂w_{ki}} = \frac{∂E}{∂h_i} ⋅ \frac{∂h_i}{∂w_{ki}} = EH_i ⋅ x_k$</p>
+					<p>$\frac{∂E}{∂\textbf{W}} = x ⋅ EH$</p>
+					<p>$v^{(new)}_{w_I} = v^{(old)}_{w_I} - η ⋅ EH$</p>
 				</section>
 				<section>
 					<h3>Architectures</h3>
@@ -272,55 +262,9 @@
 					</table>
 				</section>
 				<section>
-					<h3>Word2vec</h3>
-					<p>Output probabilities are modeled using the <i>softmax</i> function</p>
-					<p>$x = [x_1, x_2, ..., x_n]$</p>
-					<p>$$softmax(x_i) = \frac{e^{x_i}}{\sum_{j}{e^{x_j}}}$$</p>
-					<p>Cross-entropy is used as loss</p>
-					<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<p>Given an input word $W_k$ and an output word $W_j$ in the context of $W_k$,</p>
-					<p>let $x$ be the one-hot representation for $W_k$</p>
-					<p>$x = [x_1, x_2, ..., x_k, ...,x_V], x_k = 1, x_n = 0, n \neq k$</p>
-					<p>$t = [t_1, t_2, ..., t_j, ...,t_V]$</p>
-					<p>$t_j = 1$</p>
-					<p>$t_n = 0, n \neq j$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<p>activation $h = x^TW = W_{(k, :)} := v_{w_i}$</p>
-					<p>score $u_j = {v'}_{w_j}^{T} ⋅ h$, where ${v'}_{w_j}^{T} = {W'}_{(:,j)}$</p>
-					<p>$P(w_j | w_i) = y_j = \frac{exp(u_j)}{\sum_{j'=1}^{V}{exp(u_{j'})}}$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<div style="font-size:80%">
-						<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
-						<p>$\frac{∂E}{∂{w'}_{ij}} = \frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂{w'}_{ij}} = (y_j - t_j) ⋅ h_i$</p>
-						<p style="color:blue">${v'}_{w_{ij}}^{new} ← {v'}_{w_{ij}}^{old} - η ⋅ (y_j - t_j) ⋅ h_i$</p>
-						<p>$\frac{∂E}{∂w_{ki}} = \sum_{j=1}^{V}{(\frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂h_i})} ⋅ \frac{∂h_i}{∂w_{ki}} =  \\
-							= \sum_{j=1}^{V}{((y_j - t_j) ⋅ w'_{ij})} ⋅ x_k$</p>
-						<p style="color:blue">$v^{(new)}_{ki} ← v^{(old)}_{ki} - η ⋅ \sum_{j=1}^{V}{((y_j - t_j) ⋅ w'_{ij})} ⋅ x_k$</p>
-					</div>
-				</section>
-				<section>
-					<h3>Neural network language models</h3>
-					<img height="50%" width="50%" data-src="./images/bengio2003.png" alt="Bengio 2003 model" style="border:none; box-shadow:none;" />
-					<p style="font-size:30px">A Neural Probabilistic Language Model (Bengio 2003)</p>
-				</section>
-				<section>
-					<h3>Optimizations</h3>
-					<ul>
-						<li>Hierarchical Softmax</li>
-						<li>Negative Sampling</li>
-					</ul>
-				</section>
-				<section>
 					<h3>Hierarchical Softmax</h3>
-					<img height="60%" width="60%" data-src="./images/hierarchical_softmax.png" alt="Word2vec Hierarchical Softmax" style="border:none; box-shadow:none;" />
-					<div style="text-align:center; font-size:60%">
+					<img height="50%" width="50%" data-src="./images/hierarchical_softmax.png" alt="Word2vec Hierarchical Softmax" style="border:none; box-shadow:none;" />
+					<div style="text-align:center">
 						<ul>
 							<li> $h$ = hidden layer activation</li>
 							<li> $n(w,j)$ = jth node in the path of $w$</li>
@@ -328,14 +272,6 @@
 							<li> $v'_{n(w,j)}$ = output neuron corresponding to $n(w,j)$</li>
 						</ul>
 					</div>
-				</section>
-				<section>
-					<h3>Hierarchical Softmax</h3>
-					<img height="75%" width="75%" data-src="./images/hierarchical_softmax2.png" alt="Word2vec Hierarchical Softmax" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Hierarchical Softmax, Huffman tree</h3>
-					<img height="40%" width="40%" data-src="./images/HuffmanCodeAlg.png" alt="Huffman Tree" style="border:none; box-shadow:none;" />
 				</section>
 				<section>
 					<h3>Hierarchical Softmax</h3>
@@ -355,9 +291,11 @@
 					<h3>Negative Sampling</h3>
 					<img height="90%" width="90%" data-src="./images/ns_update_rule.png" alt="Word2vec Negative Sampling update rule" style="border:none; box-shadow:none;" />
 				</section>
+				<section data-background-iframe="http://ronxin.github.io/wevi/">
+				</section>
 				<section>
 					<h3>Implementation</h3>
-					<p style="font-size:50%">$ ./word2vec
+					<p style="font-size:50%">./word2vec
 						-<span style="color:blue">train</span> data.txt
 						-<span style="color:blue">output</span> vectors.txt
 						-<span style="color:blue">size</span> 200
@@ -381,7 +319,7 @@
 				</section>
 				<section>
 					<h3>Multi-words terms</h3>
-					<p>$ ./word2phrase -<span style="color:blue">train</span> text.txt
+					<p>./word2phrase -<span style="color:blue">train</span> text.txt
 						-<span style="color:blue">output</span> phrases.txt
 						-<span style="color:blue">threshold</span> 100
 						-<span style="color:blue">min-count</span> 10
@@ -395,9 +333,6 @@
 							<li>Ambiguity</li>
 							<li>Temporal ordering</li>
 						</ul>
-				</section>
-				<section>
-					<h3>Extensions</h3>
 				</section>
 				<section>
 					<h3>Doc2Vec</h3>
@@ -415,22 +350,22 @@
 				<section>
 					<h3>FastText, out-of-vocabulary words</h3>
 						<p><i>The cat is walking in the bedroom</i></p>
-						<p style="font-size:70%">$\{the, cat, is, walking, wal, walk, walki, alk, alki, alkin, ..., \\
+						<p>$\{the, cat, is, walking, wal, walk, walki, alk, alki, alkin, ..., \\
 							in, the, bedroom, bed, bedr, bedro, edro, edroo, ...\}$</p>
 				</section>
 				<section>
 					<h3>FastText, out-of-vocabulary words</h3>
 					<p style="font-size:60%">$ ./fasttext
 						<span style="color:blue">skipgram</span>
-						-<span style="color:blue">input</span> text8
-						-<span style="color:blue">output</span> text8_model
+						-<span style="color:blue">input</span> text9
+						-<span style="color:blue">output</span> text9_model
 						-<span style="color:blue">epoch</span> 1
-						-<span style="color:blue">lr</span> 0.5 <br>
-						-<span style="color:blue">minn</span> 2
-						-<span style="color:blue">maxn</span> 5
+						-<span style="color:blue">lr</span> 0.5
+						-<span style="color:blue">nmin</span> 2
+						-<span style="color:blue">nmax</span> 5
 						-<span style="color:blue">dim</span> 300
 					</p>
-					<p style="font-size:60%">$ ./fasttext <span style="color:blue">nn</span> text8_model.bin</p>
+					<p style="font-size:60%">$ ./fasttext <span style="color:blue">nn</span> text9_model.bin</p>
 					<p style="font-size:60%;white-space: pre-line">
 						<i>Query word? gearshift</i>
 						gearing 0.790762
@@ -462,15 +397,15 @@
 				</section>
 				<section>
 					<h3>FastText, supervised training for text classification</h3>
-					<p style="font-size:70%">$ ./fasttext
+					<p style="font-size:70%">./fasttext
 						<span style="color:blue">supervised</span>
 						-<span style="color:blue">input</span> cooking.train
 						-<span style="color:blue">output</span> model_cooking
-						-<span style="color:blue">lr</span> 1.0 <br>
-						-<span style="color:blue">epoch</span> 5
+						-<span style="color:blue">lr</span> 1.0
+						-<span style="color:blue">epoch</span> 25
 						-<span style="color:blue">wordNgrams</span> 2
 					</p>
-					<p style="font-size:70%">$ ./fasttext
+					<p style="font-size:70%">./fasttext
 						<span style="color:blue">predict-prob</span> model_cooking.bin - 5</p>
 					<p style="font-size:70%"><i>Query: Why not put knives in the dishwasher?</i></p>
 					<p style="white-space: pre-line;font-size:70%">__label__knives 0.335938
