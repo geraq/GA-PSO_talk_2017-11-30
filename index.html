@@ -4,9 +4,9 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>Word Embeddings for natural language processing</title>
+		<title>Genetic Algorithms and Particle Swarm Optimzation</title>
 
-		<meta name="description" content="Word Embeddings for natural language processing">
+		<meta name="description" content="Genetic Algorithms and Particle Swarm Optimzation">
 		<meta name="author" content="Germán Aquino">
 
 		<meta name="apple-mobile-web-app-capable" content="yes">
@@ -40,6 +40,11 @@
 		-->
 		<style>
 			h3 {text-transform: none !important;}
+
+			.highlight {color: red}
+			.highlight2 {color: blue}
+
+			img {border:none !important; box-shadow:none !important;}
 		</style>
 	</head>
 
@@ -47,438 +52,591 @@
 
 		<div class="reveal">
 			<header style="position: absolute;top: 50px; left: 100px"></header>
-			<!-- Any section element inside of this container is displayed as a slide -->
+			<!-- Any section element inside of this container is displayed as a slide
+
+				V list too big, doesn't fit
+				V terminology messed up, align to left or make list
+				V bold is not visible, color it
+				V images for selection schemes, split that slide
+				~ too much text in GA properties? add some color? make it a table?
+				V color keywords in lists?
+				- GA replacements
+				- PSO
+					- image
+					- components
+						- position
+						- direction
+						- history
+					- formulae
+					- parameters
+					- variants?
+
+		-->
 			<div class="slides">
 				<section>
-					<h3>Word embeddings for natural language processing</h3>
-				</section>
-				<section style="font-size: 25px">
-					<!--<style>header:after { content: "Outline"; }</style>-->
-						<h3> Outline </h3>
-						<ul>
-							<li>Introduction</li>
-							<li>Applications of word embeddings</li>
-							<li>Language models
-								<ul>
-									<li>count-based</li>
-									<li>prediction-based (NN-based)</li>
-								</ul>
-							</li>
-							<li>Neural network language models</li>
-							<li>Word2vec
-								<ul>
-									<li>Context window</li>
-									<li>Architectures
-										<ul>
-											<li>Cbow</li>
-											<li>Skipgram</li>
-										</ul>
-									</li>
-									<li>Optimizations
-										<ul>
-											<li>Hierarchical Softmax</li>
-											<li>Negative Sampling</li>
-										</ul>
-									</li>
-									<!--
-									<li>Other optimizations
-										<ul>
-											<li>random window length, multiword terms, infrequent terms removal, frequent terms undersampling.</li>
-										</ul>
-									</li>
-									-->
-								</ul>
-							</li>
-							<li>Implementation</li>
-							<li>Limitations</li>
-							<li>Extensions
-								<ul>
-									<li>Doc2vec</li>
-									<li>FastText</li>
-								</ul>
-							</li>
-						</ul>
+					<h3>Genetic Algorithms</h3>
+					<h3>Particle Swarm Optimization</h3>
 				</section>
 				<section>
-					<h3>Word Embeddings</h3>
-						<ul>
-							<li>Analogy tasks: Paris is to France as Berlin is to <i>what</i>?</li>
-							<li>Find the word that does not fit: <br>
-								<i>dinner cereal breakfast lunch</i>
-							</li>
-						</ul>
-				</section>
-				<section>
-					<h3>Word Embeddings</h3>
-					<img height="100%" width="100%" data-src="./images/word_embeddings.png" alt="Word Embeddings" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Applications</h3>
-					<img height="50%" width="50%" data-src="./images/vector_algebra.png" alt="Semantic properties as vector algebra" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Distributed Representations of Words and Phrases and their Compositionality (Mikolov 2013)</p>
-				</section>
-				<section>
-					<h3>Applications</h3>
-					<img height="100%" width="100%" data-src="./images/mikolov_analogies.png" alt="Analogy tasks (Mikolov)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Efficient Estimation of Word Representations in Vector Space (Mikolov 2013)</p>
-				</section>
-				<section>
-					<h3>Applications</h3>
-					<img height="100%" width="100%" data-src="./images/collobert_table.png" alt="Most related words (Collobert)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Natural Language Processing (almost) from Scratch (Collobert and Weston 2011)</p>
-				</section>
-				<section>
-					<h3>Applications</h3>
-					<img height="70%" width="70%" data-src="./images/mikolov_machine_translation.png" alt="Embeddings for machine translation (Mikolov)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Exploiting Similarities among Languages for Machine Translation (Mikolov 2013)</p>
-				</section>
-				<section>
-					<h3>Applications</h3>
-					<img height="70%" width="70%" data-src="./images/socher_image_embeddings.png" alt="Embeddings for image classification (Socher)" style="border:none; box-shadow:none;" />
-					<p style="font-size:50%">Zero-Shot Learning Through Cross-Modal Transfer (Socher 2013)</p>
-				</section>
-				<!--
-				<section data-background-iframe="https://rare-technologies.com/word2vec-tutorial/#bonus_app">
-				-->
-				<section>
-					<h3>Bag-of-words, TF-IDF and LSA</h3>
-					<!--<img data-src="https://wikimedia.org/api/rest_v1/media/math/render/svg/f6ce07d37d7cc1057be2b032cccc5cf580945af9"-->
-					<img data-src="./images/lsa.svg" alt="Latent Semantic Analysis" style="border:none; box-shadow:none;" />
-					<div style="font-size:60%">
-						<p>$x_{i,j} = TFIDF(t_i, d_j)$</p>
-						<p>$TFIDF(t_i, d_j) = TF(t_i, d_j) ⋅ IDF(t_i, d_j)$</p>
-						<p>$TF(t_i, d_j) = \frac{freq(t_i, d_j)}{|d_j|}$</p>
-						<p>$IDF(t_i, d_j) = log(\frac{|D|}{|\{d_k : t_i ∈ d_k\}|})$</p>
-				</div>
-				</section>
-				<section>
-					<h3>Bag-of-words and TF-IDF</h3>
-					<div style="text-align:left; padding: 0% 10% 0% 20%;font-size: 80%">
-						<p>Doc1 = "He is a lazy boy. She is also lazy." </p>
-						<p>Doc2 = "John is a lazy person." </p>
-					</div>
-					<div>
-						<div style="font-size:50%;display:inline-block;margin-right:10%">
-							<p>Raw frequencies</p>
-							<table>
-								<tr><td></td><td>Doc1</td><td>Doc2</td></tr>
-								<tr><td>a</td><td>1</td><td>1</td></tr>
-								<tr><td>also</td><td>1</td><td>0</td></tr>
-								<tr><td>boy</td><td>1</td><td>0</td></tr>
-								<tr><td>he</td><td>1</td><td>0</td></tr>
-								<tr><td>is</td><td>2</td><td>1</td></tr>
-								<tr><td>john</td><td>0</td><td>1</td></tr>
-								<tr><td>lazy</td><td>2</td><td>1</td></tr>
-								<tr><td>person</td><td>0</td><td>1</td></tr>
-								<tr><td>she</td><td>1</td><td>0</td></tr>
-							</table>
-						</div>
-						<div style="font-size:50%;display:inline-block">
-							<p>TF-IDF</p>
-							<table >
-								<tr><td></td><td>Doc1</td><td>Doc2</td></tr>
-								<tr><td>a</td><td>0</td><td>0</td></tr>
-								<tr><td>also</td><td>0.077</td><td>0</td></tr>
-								<tr><td>boy</td><td>0.077</td><td>0</td></tr>
-								<tr><td>he</td><td>0.077</td><td>0</td></tr>
-								<tr><td>is</td><td>0</td><td>0</td></tr>
-								<tr><td>john</td><td>0</td><td>0.138</td></tr>
-								<tr><td>lazy</td><td>0</td><td>0</td></tr>
-								<tr><td>person</td><td>0</td><td>0.138</td></tr>
-								<tr><td>she</td><td>0.077</td><td>0</td></tr>
-							</table>
-						</div>
-					</div>
-				</section>
-				<section>
-					<h3>Latent Semantic Analysis: decomposition through SVD</h3>
-					<img data-src="./images/svd.png" alt="Singular Value Decomposition" style="border:none; box-shadow:none;" />
-				</section>
-				</section>
-				<section>
-					<h3>Language models</h3>
-					<p>Given vocabulary $V$,</p>
-					<p>approximate a conditional distribution over words:</p>
-					<p>$$ P(W_o | W_i), W_i \in V, W_o \in V$$</p>
-					<p>$$ P(W_{i+1} | {W_{i-n}, ..., W_{i-1}, W_i}), W_j \in V, j \in \mathbb{N} $$</p>
-				</section>
-				<section>
-					<h3>Distributional hypothesis</h3>
-					<div>
-						<p>The <span style="color:red">cat</span> is <span style="color:blue">walking</span> in the <span style="color:green">bedroom</span></p>
-						<p>A <span style="color:red">dog</span> was <span style="color:blue">running</span> in a <span style="color:green">room</span></p>
-					</div>
-				</section>
-				<section>
-					<h3>Count-based language models</h3>
-					<ul>
-						<li>N-grams</li>
-						<li>co-occurrence count on training set</li>
-						<li>Probability smoothing</li>
-						<li>The amount of data required grows exponentially with the size of the context</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Neural network language models</h3>
-					<ul>
-						<li>Distributed representations</li>
-						<li>Embeddings are represented by the activation pattern of the hidden layer as a whole</li>
-						<li>Words with similar meanings are represented by vectors that are close in the high-dimensional space</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Neural network language models</h3>
-					<ul>
-						<li>Bengio 2003</li>
-						<li>Morin, Bengio 2005</li>
-						<li>Collobert, Weston 2008 (CNNs)</li>
-						<li>Mnih, Hinton 2009 (HLBL)</li>
-						<li>Mikolov 2012 (RNNs)</li>
-						<li><b><i><span style="color:red">Mikolov 2013 (word2vec)<span></i></b></li>
-						<li>Mnih, Kavukcuoglu (vLBL, ivLBL) 2013</li>
-						<li>Pennington, Socher 2014 (GloVe)</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<img data-src="./images/word2vec_layout.png" alt="Word2vec neural network" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<img height="100%" width="100%" data-src="./images/mat_mult2.png" alt="One-hot matrix multiplication" style="border:none; box-shadow:none;" />
-				</section>
-				<section data-background-iframe="https://ronxin.github.io/wevi/"></section>
-				<section>
-					<h3>Sliding window</h3>
-					<img height="60%" width="60%" data-src="./images/sliding_window.png" alt="Word2vec sliding window" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Architectures</h3>
-					<table>
-						<tr>
-							<td>
-								<div style="text-align:center">
-									<img id="cbow" data-src="./images/cbow.png" alt="Word2vec CBOW" style="border:none; box-shadow:none;" />
-									<label for="cbow">CBOW</label>
-								</div>
-							</td>
-							<td>
-								<div style="text-align:center">
-									<img id="skipgram" data-src="./images/skipgram.png" alt="Word2vec Skipgram" style="border:none; box-shadow:none;" />
-									<label for="skipgram">Skipgram</label>
-								</div>
-							</td>
-						</tr>
-					</table>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<p>Output probabilities are modeled using the <i>softmax</i> function</p>
-					<p>$x = [x_1, x_2, ..., x_n]$</p>
-					<p>$$softmax(x_i) = \frac{e^{x_i}}{\sum_{j}{e^{x_j}}}$$</p>
-					<p>Cross-entropy is used as loss</p>
-					<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<p>Given an input word $W_k$ and an output word $W_j$ in the context of $W_k$,</p>
-					<p>let $x$ be the one-hot representation for $W_k$</p>
-					<p>$x = [x_1, x_2, ..., x_k, ...,x_V], x_k = 1, x_n = 0, n \neq k$</p>
-					<p>$t = [t_1, t_2, ..., t_j, ...,t_V]$</p>
-					<p>$t_j = 1$</p>
-					<p>$t_n = 0, n \neq j$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<p>activation $h = x^TW = W_{(k, :)} := v_{w_i}$</p>
-					<p>score $u_j = {v'}_{w_j}^{T} ⋅ h$, where ${v'}_{w_j}^{T} = {W'}_{(:,j)}$</p>
-					<p>$P(w_j | w_i) = y_j = \frac{exp(u_j)}{\sum_{j'=1}^{V}{exp(u_{j'})}}$</p>
-				</section>
-				<section>
-					<h3>Word2vec</h3>
-					<div style="font-size:80%">
-						<p>$E(y,t) = - \sum_{m=1}^{V}{t_m \cdot log(y_m)} = - log(y_o)$</p>
-						<p>$\frac{∂E}{∂{w'}_{ij}} = \frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂{w'}_{ij}} = (y_j - t_j) ⋅ h_i$</p>
-						<p style="color:blue">${v'}_{w_{ij}}^{new} ← {v'}_{w_{ij}}^{old} - η ⋅ (y_j - t_j) ⋅ h_i$</p>
-						<p>$\frac{∂E}{∂w_{ki}} = \sum_{j=1}^{V}{(\frac{∂E}{∂u_j} ⋅ \frac{∂u_j}{∂h_i})} ⋅ \frac{∂h_i}{∂w_{ki}} =  \\
-							= \sum_{j=1}^{V}{((y_j - t_j) ⋅ w'_{ij})} ⋅ x_k$</p>
-						<p style="color:blue">$v^{(new)}_{ki} ← v^{(old)}_{ki} - η ⋅ \sum_{j=1}^{V}{((y_j - t_j) ⋅ w'_{ij})} ⋅ x_k$</p>
-					</div>
-				</section>
-				<section>
-					<h3>Neural network language models</h3>
-					<img height="50%" width="50%" data-src="./images/bengio2003.png" alt="Bengio 2003 model" style="border:none; box-shadow:none;" />
-					<p style="font-size:30px">A Neural Probabilistic Language Model (Bengio 2003)</p>
-				</section>
-				<section>
-					<h3>Optimizations</h3>
-					<ul>
-						<li>Hierarchical Softmax</li>
-						<li>Negative Sampling</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Hierarchical Softmax</h3>
-					<img height="60%" width="60%" data-src="./images/hierarchical_softmax.png" alt="Word2vec Hierarchical Softmax" style="border:none; box-shadow:none;" />
-					<div style="text-align:center; font-size:60%">
-						<ul>
-							<li> $h$ = hidden layer activation</li>
-							<li> $n(w,j)$ = jth node in the path of $w$</li>
-							<li> $ch(n(w, j))$ = left child of $n(w,j)$</li>
-							<li> $v'_{n(w,j)}$ = output neuron corresponding to $n(w,j)$</li>
-						</ul>
-					</div>
-				</section>
-				<section>
-					<h3>Hierarchical Softmax</h3>
-					<img height="75%" width="75%" data-src="./images/hierarchical_softmax2.png" alt="Word2vec Hierarchical Softmax" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Hierarchical Softmax, Huffman tree</h3>
-					<img height="40%" width="40%" data-src="./images/HuffmanCodeAlg.png" alt="Huffman Tree" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Hierarchical Softmax</h3>
-					<img height="70%" width="70%" data-src="./images/hs_update_rule.png" alt="Word2vec Hierarchical Softmax update rule" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Negative Sampling</h3>
-					<ul>
-						<li>Pick up <span style="color:green">K</span> incorrect words</li>
-						<li><span style="color:blue">Maximize</span> the probability of picking the <span style="color:blue">right</span> word</li>
-						<li><span style="color:red">Minimize</span> the probability of picking <span style="color:red">incorrect</span> words</li>
-						<li>Pick negative samples with probability proportional to their frequency, raised to the 3/4 power</li>
-						<li>Unlike Hierarchical softmax, the output layer does not model a probability distribution</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Negative Sampling</h3>
-					<img height="90%" width="90%" data-src="./images/ns_update_rule.png" alt="Word2vec Negative Sampling update rule" style="border:none; box-shadow:none;" />
-				</section>
-				<section>
-					<h3>Implementation</h3>
-					<p style="font-size:50%">$ ./word2vec
-						-<span style="color:blue">train</span> data.txt
-						-<span style="color:blue">output</span> vectors.txt
-						-<span style="color:blue">size</span> 200
-						-<span style="color:blue">window</span> 5
-						-<span style="color:blue">cbow</span> 1
-						-<span style="color:blue">hs</span> 0
-						-<span style="color:blue">negative</span> 5 <br>
-						-<span style="color:blue">sample</span> 1e-4
-						-<span style="color:blue">alpha</span> 0.0025
-						-<span style="color:blue">min-count</span> 10
-						<!-- -<span style="color:blue">binary</span> 0
-						 -<span style="color:blue">debug</span> 2-->
-					</p>
-					<ul style="font-size:50%">
-						<li>min-count: minimum frequency a words needs to have, otherwise it is discarded (default=5)</li>
-						<li>sample: coefficient to discard frequent words, with probability proportional to their frequency (default = 0, 1e-5 is a good value)
-								<p>In the paper: $P(w_i) = 1 - \sqrt{\frac{sample}{f(w_i)}}$</p>
-								<p>In the code: $P(w_i) = 1 - \big({\sqrt{\frac{sample \cdot |V|}{f(w_i)}} + \frac{sample \cdot |V|}{f(w_i)}}\big)$</p>
+					<h3>Outline</h3>
+					<ul style="font-size:70%">
+						<li>Metaheuristics</li>
+						<li>S-metaheuristics and P-metaheuristics</li>
+						<li>P-metaheuristics
+							<ul>
+								<li>Genetic Algorithms (GA)</li>
+									<ul>
+										<li>Selection</li>
+										<li>Crossover</li>
+										<li>Mutation</li>
+										<li>Replacement</li>
+									</ul>
+								</li>
+								<li>
+									Particle Swarm Optimization (PSO)
+									<ul>
+										<li>Neighboorhood</li>
+										<li>Particle</li>
+										<li>Movement</li>
+									</ul>
+								</li>
+							</ul>
 						</li>
 					</ul>
 				</section>
 				<section>
-					<h3>Multi-words terms</h3>
-					<p>$ ./word2phrase -<span style="color:blue">train</span> text.txt
-						-<span style="color:blue">output</span> phrases.txt
-						-<span style="color:blue">threshold</span> 100
-						-<span style="color:blue">min-count</span> 10
-					<p>Join two adjacent words with an underscore if their joint score is higher than <i>threshold</i>:</p>
-					<p>$score(w_i, w_j) = \frac{(count(w_i, w_j) - min\_count) \times |V|}{count(w_i) \times count(w_j)}$</p>
+					<h3>Metaheuristics</h3>
+					<p>Rosenbrock's function</p>
+					<img width="50%" height="50%" src="images/Rosenbrock_function.svg" alt="Ackley's function"/>
+					<p>$f(x,y) = (1 - x)^2 + 100(y - x^2)^2$</p>
 				</section>
 				<section>
-					<h3>Limitations</h3>
-						<ul>
-							<li>Out-of-vocabulary words</li>
-							<li>Ambiguity</li>
-							<li>Temporal ordering</li>
-						</ul>
+					<h3>Metaheuristics</h3>
+					<p>Ackley's function</p>
+					<img width="40%" height="40%" src="images/Ackley_function.png" alt="Ackley's function"/>
+					<p style="font-size:60%">$f(x,y) = -20 exp\big[-0.2 \sqrt{0.5(x^2+y^2)}\big]
+						- exp\big[0.5(cos2\pi x+cos2\pi y)\big] + e + 20$</p>
 				</section>
 				<section>
-					<h3>Extensions</h3>
+					<h3>Metaheuristics</h3>
+					<p>Traveling Salesman Problem</p>
+					<img width="50%" height="50%" src="images/tsp2.png" alt="Traveling Salesman Problem"/>
 				</section>
 				<section>
-					<h3>Doc2Vec</h3>
-						<img height="80%" width="80%" data-src="./images/doc2vec.png" alt="Doc2vec" style="border:none; box-shadow:none;" />
-						<p style="font-size:50%">Distributed Representations of Sentences and Documents (Le and Mikolov 2014)</p>
-				</section>
-				<section>
-					<h3>FastText</h3>
+					<h3>Metaheuristics</h3>
 					<ul>
-						<li>Word vectors are composed by character n-grams</li>
-						<li>Vectors for out-of-vocabulary words can be approximated from the character n-gram vectors</li>
-						<li>Better for syntactic tasks and highly-inflected languages</li>
+						<li>Representation in solution space</li>
+						<li>Objective function</li>
+						<li>Neighborhood</li>
 					</ul>
 				</section>
 				<section>
-					<h3>FastText, out-of-vocabulary words</h3>
-						<p><i>The cat is walking in the bedroom</i></p>
-						<p style="font-size:70%">$\{the, cat, is, walking, wal, walk, walki, alk, alki, alkin, ..., \\
-							in, the, bedroom, bed, bedr, bedro, edro, edroo, ...\}$</p>
+					<h3>Metaheuristics</h3>
+					<p>S-metaheuristics: a single solution</p>
+					<p>P-metaheuristics: a <i>population</i> of solutions</p>
 				</section>
 				<section>
-					<h3>FastText, out-of-vocabulary words</h3>
-					<p style="font-size:60%">$ ./fasttext
-						<span style="color:blue">skipgram</span>
-						-<span style="color:blue">input</span> text8
-						-<span style="color:blue">output</span> text8_model
-						-<span style="color:blue">epoch</span> 1
-						-<span style="color:blue">lr</span> 0.5 <br>
-						-<span style="color:blue">minn</span> 2
-						-<span style="color:blue">maxn</span> 5
-						-<span style="color:blue">dim</span> 300
-					</p>
-					<p style="font-size:60%">$ ./fasttext <span style="color:blue">nn</span> text8_model.bin</p>
-					<p style="font-size:60%;white-space: pre-line">
-						<i>Query word? gearshift</i>
-						gearing 0.790762
-						flywheels 0.779804
-						flywheel 0.777859
-						gears 0.776133
-						driveshafts 0.756345
-						driveshaft 0.755679
-						daisywheel 0.749998
-						wheelsets 0.748578
-						epicycles 0.744268
-						gearboxes 0.73986
-				</p>
+					<h3>Metaheuristics</h3>
+					<div style="float:left">
+							<p>S-metaheuristics</p>
+							<ul style="font-size:60%">
+								<li>Local search (hill-climbing)</li>
+								<li>Tabu search</li>
+								<li>Simulated Annealing</li>
+							</ul>
+					</div>
+					<div>
+							<p>P-metaheuristics</p>
+							<ul style="font-size:60%">
+								<li>
+									<p>Evolutionary Algorithms (EA)</p>
+									<ul>
+										<li><span class="highlight">Genetic Algorithms (GA)</span></li>
+										<li>Evolution Strategies (ES)</li>
+										<li>Evolutionary Programming (EP)</li>
+										<li>Genetic Programming (GP)</li>
+									</ul>
+								</li>
+								<li>
+									<p>Swarm intelligence</p>
+									<ul>
+										<li><span class="highlight">Particle Swarm Optimization (PSO)</span></li>
+										<li>Ant Colony Optimization (ACO)</li>
+										<li>Bee colonies (BC)</li>
+									</ul>
+								</li>
+							</ul>
+					</div>
 				</section>
 				<section>
-					<h3>FastText, supervised training for text classification</h3>
-					<p style="font-size:50%; white-space: pre-line;text-align:left;">
-						<span style="color:blue;font-style:italic">__label__sauce __label__cheese</span> how much does potato starch affect a cheese sauce recipe
-						<span style="color:blue;font-style:italic">__label__food-safety __label__acidity</span> dangerous pathogens capable of growing in acidic environments
-						<span style="color:blue;font-style:italic">__label__cast-iron __label__stove</span> how do i cover up the white spots on my cast iron stove
-						<span style="color:blue;font-style:italic">__label__restaurant</span> michelin three star restaurant; but if the chef is not there
-						<span style="color:blue;font-style:italic">__label__knife-skills __label__dicing</span> without knife skills how can i quickly and accurately dice vegetables
-						<span style="color:blue;font-style:italic">__label__storage-method __label__equipment __label__bread</span> whats the purpose of a bread box
-						<span style="color:blue;font-style:italic">__label__baking __label__food-safety __label__substitutions __label__peanuts</span> how to seperate peanut oil from roasted peanuts at home
-						<span style="color:blue;font-style:italic">__label__chocolate</span> american equivalent for british chocolate terms
-						<span style="color:blue;font-style:italic">__label__baking __label__oven __label__convection</span> fan bake vs bake
-						<span style="color:blue;font-style:italic">__label__sauce __label__storage-lifetime __label__acidity __label__mayonnaise</span> regulation and balancing of readymade packed mayonnaise and other sauces
-					</p>
+					<h3>P-metaheuristics</h3>
+						<img src="images/P-metaheuristics.png" alt="template for metaheuristics"/>
 				</section>
 				<section>
-					<h3>FastText, supervised training for text classification</h3>
-					<p style="font-size:70%">$ ./fasttext
-						<span style="color:blue">supervised</span>
-						-<span style="color:blue">input</span> cooking.train
-						-<span style="color:blue">output</span> model_cooking
-						-<span style="color:blue">lr</span> 1.0 <br>
-						-<span style="color:blue">epoch</span> 5
-						-<span style="color:blue">wordNgrams</span> 2
-					</p>
-					<p style="font-size:70%">$ ./fasttext
-						<span style="color:blue">predict-prob</span> model_cooking.bin - 5</p>
-					<p style="font-size:70%"><i>Query: Why not put knives in the dishwasher?</i></p>
-					<p style="white-space: pre-line;font-size:70%">__label__knives 0.335938
-						__label__equipment 0.0664063
-						__label__food-safety 0.0664063
-						__label__cleaning 0.0605469
-						__label__storage-method 0.0332031
-					</p>
+					<h3>Evolutionary Algorithms (EA)</h3>
+						<img src="images/EA.png" alt="evolutionary algorithms (EA)"/>
+				</section>
+				<section>
+					<h3>Evolutionary Algorithms (EA)</h3>
+						<img src="images/EA-metaphors.png" alt="metaphors for EA"/>
+				</section>
+				<section>
+					<h3> Evolutionary Algorithms (EA)</h3>
+					<div style="text-align:left; font-size:80%">
+						<p><span class="highlight2">chromosome</span>: solution</p>
+						<p><span class="highlight2">locus</span>: index of variable in the solution</p>
+						<p><span class="highlight2">allele (gene)</span>: variable in the solution</p>
+						<p><span class="highlight2">genotype</span>: encoding of the solution (used in crossover and mutation)</p>
+						<p><span class="highlight2">phenotype</span>: characteristics of the solution (used in fitness and selection)</p>
+				</div>
+				</section>
+				<section>
+					<h3> Evolutionary Algorithms (EA)</h3>
+					<img src="images/genotype-phenotype.png" alt="genotype vs phenotype"/>
+				</section>
+				<section>
+					<h3>Evolutionary Algorithms (EA)</h3>
+					<ul>
+						<li><span class="highlight">Genetic Algorithms (GA)</span></li>
+						<li>Evolution Strategies (ES)</li>
+						<li>Evolutionary Programming (EP)</li>
+						<li>Genetic Programming (GP)</li>
+					</ul>
+				</section>
+				<section>
+						<h3>Genetic Algorithms (GA)</h3>
+								<div style="float:left">
+									<ul>
+										<li>Individuals
+											<ul>
+												<li>binary</li>
+												<li>discrete</li>
+												<li>real-valued</li>
+												<li>permutation</li>
+											</ul>
+										</li>
+										<li>Parent selection
+											<ul>
+												<li>roulette</li>
+												<li>tournament</li>
+												<li>rank-based</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div style="float:right">
+									<ul>
+										<li>Crossover
+											<ul>
+												<li>n-point</li>
+												<li>uniform</li>
+											</ul>
+										</li>
+										<li>Mutation
+											<ul>
+												<li>bit flipping</li>
+												<li>random replacement</li>
+											</ul>
+										</li>
+										<li>Replacement
+											<ul>
+												<li>offspring replace parents</li>
+												<li>elitism</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+				</section>
+				<section>
+						<h3>Genetic Algorithms (GA)</h3>
+								<div style="float:left">
+									<ul>
+										<li>Individuals
+											<ul>
+												<li>binary</li>
+												<li>discrete</li>
+												<li>real-valued</li>
+												<li>permutation</li>
+											</ul>
+										</li>
+										<li><span class="highlight">Parent selection</span>
+											<ul>
+												<li>roulette</li>
+												<li>tournament</li>
+												<li>rank-based</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div style="float:right">
+									<ul>
+										<li>Crossover
+											<ul>
+												<li>n-point</li>
+												<li>uniform</li>
+											</ul>
+										</li>
+										<li>Mutation
+											<ul>
+												<li>bit flipping</li>
+												<li>random replacement</li>
+											</ul>
+										</li>
+										<li>Replacement
+											<ul>
+												<li>offspring replace parents</li>
+												<li>elitism</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+				</section>
+				<section>
+					<h3>GA selection: roulette</h3>
+					<img src="images/roulette.png" alt="GA selection: roulette"/>
+				</section>
+				<section>
+					<h3>GA selection: roulette</h3>
+					<ul>
+						<li>classic roulette:
+							<ul>
+								<li>pick individuals with probability proportional to their fitness.</li>
+								<li>cons: possible stagnation, not enough selection pressure</li>
+							</ul>
+						</li>
+						<li>stochastic universal sampling: roulette with multiple "pointers"</li>
+					</ul>
+				</section>
+				<section>
+					<h3>GA selection: tournament</h3>
+					<img src="images/tournament.png" alt="GA selection: tournament"/>
+				</section>
+				<section>
+					<h3>GA selection: tournament</h3>
+						<ul>
+							<li>pick $K$ individuals, take the best</li>
+							<li>might be probabilistic:
+								<ul>
+									<li>pick the 1st with prob $p$, the 2nd with prob $p(1-p)$, the 3rd with prob $p(1-p)^2$, etc</li>
+								</ul>
+							</li>
+							<li>if $K = N →$ deterministic search</li>
+							<li>if $K = 1 →$	random search</li>
+						</ul>
+				</section>
+				<section>
+					<h3>GA selection: rank-based</h3>
+					<img src="images/rank-based.png" alt="GA selection: rank-based"/>
+				</section>
+				<section>
+					<h3>GA selection: rank-based</h3>
+						<ul>
+							<li>relative to the fitness of other individuals
+								<p>$P(i) = \frac{2 - s}{μ} + \frac{2(r(i) - 1)(s-1)}{μ(μ - 1)}, 1 < s ≤ 2$</p>
+								<p>$μ = $ population size</p>
+								<p>$r(i) = $ rank of individual $i, r(i) \ge 1, r(i) = 1$ for worst individual</p>
+							</li>
+							<li>selection pressure:
+								<p>higher $s → $ more importance to better individuals</p>
+							</li>
+						</ul>
+				</section>
+				<section>
+						<h3>Genetic Algorithms (GA)</h3>
+								<div style="float:left">
+									<ul>
+										<li>Individuals
+											<ul>
+												<li>binary</li>
+												<li>discrete</li>
+												<li>real-valued</li>
+												<li>permutation</li>
+											</ul>
+										</li>
+										<li>Parent selection
+											<ul>
+												<li>roulette</li>
+												<li>tournament</li>
+												<li>rank-based</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div style="float:right">
+									<ul>
+										<li><span class="highlight">Crossover</span>
+											<ul>
+												<li>n-point</li>
+												<li>uniform</li>
+											</ul>
+										</li>
+										<li>Mutation
+											<ul>
+												<li>bit flipping</li>
+												<li>random replacement</li>
+											</ul>
+										</li>
+										<li>Replacement
+											<ul>
+												<li>offspring replace parents</li>
+												<li>elitism</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+				</section>
+				<section>
+					<h3>GA crossover</h3>
+					<ul>
+						<li><span class="highlight2">heritability</span>: material from both parents should be inherited</li>
+						<li><span class="highlight2">validity</span>: crossover should produce valid individuals</li>
+					</ul>
+					<p style="text-align:justify">ideally crossover should be non-disruptive, i.e., it should produce small changes, both in the genotype and the phenotype</p>
+				</section>
+				<section>
+					<h3>GA crossover</h3>
+					<ul>
+						<li><span class="highlight2">n-point</span>: pick <i>n</i> cut points, and swap the portions among the parents</li>
+						<li><span class="highlight2">uniform</span>: each gene goes to one parent or the other with a fixed probability</li>
+					</ul>
+				</section>
+				<section>
+					<h3>GA crossover: n-point</h3>
+					<img width="80%" height="80%" src="images/n_point_crossover.png" alt="GA crossover: n-point"/>
+					<p style="text-align:center;font-size:50%">n-point crossover (n > 1) is less disruptive than 1-point crossover for co-adapted variables <br>at the beginning or the end of the individual.</p>
+				</section>
+				<section>
+					<h3>GA crossover: uniform</h3>
+					<img src="images/uniform_crossover.png" alt="GA crossover: uniform"/>
+				</section>
+				<section>
+					<h3>GA for permutations: order crossover</h3>
+					<img width="80%" height="80%" id="perm-order-crossover" src="images/perm-order-crossover.png" alt="GA permutation crossover: order crossover"/>
+				</section>
+				<section>
+					<h3>GA for permutations: two-point crossover</h3>
+					<img width="50%" height="50%" id="two-point-crossover" src="images/perm-two-point-crossover.png" alt="GA permutation crossover: two-point crossover"/>
+				</section>
+				<section>
+					<h3>GA: crossover for continuous representations</h3>
+					<ul>
+						<li>Intermediate crossover: $o_i = αx_{1i} + (1-α)x_{2i}$</li>
+						<li>Geometrical crossover: $o = [\sqrt{x_{11}x_{21}},...,\sqrt{x_{1n}x_{2n}}]$</li>
+					</ul>
+				</section>
+				<section>
+						<h3>Genetic Algorithms (GA)</h3>
+								<div style="float:left">
+									<ul>
+										<li>Individuals
+											<ul>
+												<li>binary</li>
+												<li>discrete</li>
+												<li>real-valued</li>
+												<li>permutation</li>
+											</ul>
+										</li>
+										<li>Parent selection
+											<ul>
+												<li>roulette</li>
+												<li>tournament</li>
+												<li>rank-based</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div style="float:right">
+									<ul>
+										<li>Crossover
+											<ul>
+												<li>n-point</li>
+												<li>uniform</li>
+											</ul>
+										</li>
+										<li><span class="highlight">Mutation</span>
+											<ul>
+												<li>bit flipping</li>
+												<li>random replacement</li>
+											</ul>
+										</li>
+										<li>Replacement
+											<ul>
+												<li>offspring replace parents</li>
+												<li>elitism</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+				</section>
+				<section>
+					<h3>GA mutation</h3>
+					<ul>
+						<li><span class="highlight2">ergodicity</span>: search space must be explored with equal probability</li>
+						<li><span class="highlight2">validity</span>: solutions produces must be valid</li>
+						<li><span class="highlight2">locality</span>: mutation should produce a minimal change</li>
+					</ul>
+			</section>
+			<section>
+					<h3>GA mutation: Variants</h3>
+					<ul>
+						<li><p>discrete</p>
+							<ul>
+								<li>bit flipping</li>
+								<li>random replacement</li>
+								<li>swapping, inversion, or insertion in order-based representation</li>
+							</ul>
+						</li>
+						<li><p>continuous</p>
+							<ul>
+								<li>uniform</li>
+								<li>gaussian</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>GA mutation: order-based operations</h3>
+					<img width="30%" height="30%" src="images/order-based-mutations-2.png" alt="GA mutation: order-based"/>
+				</section>
+				<section>
+						<h3>Genetic Algorithms (GA)</h3>
+								<div style="float:left">
+									<ul>
+										<li>Individuals
+											<ul>
+												<li>binary</li>
+												<li>discrete</li>
+												<li>real-valued</li>
+												<li>permutation</li>
+											</ul>
+										</li>
+										<li>Parent selection
+											<ul>
+												<li>roulette</li>
+												<li>tournament</li>
+												<li>rank-based</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+								<div style="float:right">
+									<ul>
+										<li>Crossover
+											<ul>
+												<li>n-point</li>
+												<li>uniform</li>
+											</ul>
+										</li>
+										<li>Mutation
+											<ul>
+												<li>bit flipping</li>
+												<li>random replacement</li>
+											</ul>
+										</li>
+										<li><span class="highlight">Replacement</span>
+											<ul>
+												<li>offspring replace parents</li>
+												<li>elitism</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+				</section>
+				<section>
+					<h3>GA: replacement</h3>
+					<ul>
+						<li><p>Extreme strategies:</p>
+							<ul>
+								<li>Generational replacement: offspring population replace the parent population</li>
+								<li>Steady-state replacement: Only one offspring is generated, to replace the worst individual</li>
+							</ul>
+						</li>
+						<li>Elitism: replace λ individuals, 1 < λ < μ </li>
+						<li>stochastic or deterministic replacement</li>
+					</ul>
+				</section>
+				<section>
+					<h3>GA: common parameters</h3>
+					<ul>
+						<li>mutation $\in [0.001, 0.01]$ <br>alternatively $1/k$, $k$ = number of variables </li>
+						<li>crossover $\in [0.3, 0.9]$</li>
+						<li>population size usually $\in [20, 100]$</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Other evolutionary algorithms</h3>
+					<p>Estimation of Distribution Algorithms (EDA)</p>
+					<p>Differential Evolution (DE)</p>
+				</section>
+				<section>
+					<h3>Particle Swarm Optimzation (PSO)</h3>
+					<img src="images/PSO.png" alt="Particle Swarm Optimization"/>
+				</section>
+				<section>
+					<h3>PSO: particle structure</h3>
+					<ul>
+						<li>$x$: current position</li>
+						<li>$p$: best position of particle's history</li>
+						<li>$v$: current direction and velocity</li>
+						<li><i>x-fitness</i>: current fitness</li>
+						<li><i>p-fitness</i>: best fitness of particle's history</li>
+					</ul>
+				</section>
+				<section>
+					<h3>PSO: neighborhood</h3>
+					<img src="images/PSO-neighborhood.png" alt="PSO neighborhood"/>
+				</section>
+				<section>
+					<h3>PSO: movement</h3>
+					<img src="images/PSO-movement.png" alt="Particle movement"/>
+				</section>
+				<section>
+					<h3>PSO: update</h3>
+					<p>$v_i^t ← \color{purple}{w}v_i^{t-1} + \color{red}{ρ_1}\color{orange}{C_1} (\color{blue}{p_i} - x_i^{t-1}) +
+						\color{red}{ρ_2}\color{orange}{C_2} (\color{green}{p_g} - x_i^{t-1})$</p>
+					<p>$x_i^t ← x_i^{t-1} + v_i^t$</p>
+					<ul style="font-size:80%">
+						<li>$x_i^{t-1}$ : current position of particle $i$</li>
+						<li>$\color{blue}{p_i}$ : best position of particle $i$</li>
+						<li>$\color{green}{p_g}$ : position of best particle in the neighborhood of particle $i$</li>
+						<li>$\color{red}{ρ_1}, \color{red}{ρ_2}	\in [0,1]$</li>
+						<li>$\color{orange}{C_1}, \color{orange}{C_2}$ are constants (local and social influence). <br>Typically both are set to 2.</li>
+						<li>$\color{purple}{w}$: inertia</li>
+						<li>$v_{ij} \in [-V_{max}, V_{max}]$</li>
+					</ul>
+				</section>
+				<section>
+					<h3>PSO: update</h3>
+					<p>if $f(x_i) > f(p_i)$ then $p_i ← x_i$</p>
+					<p>if $f(x_i) > f(p_g)$ then $p_g ← x_i$</p>
+				</section>
+				<section>
+					<h3>PSO for discrete problems</h3>
+					<ul style="font-size:70%">
+						<li>binary encoding</li>
+						<li>Stochastic velocity models: use of a sigmoid function</li>
+						<li>Geometric PSO (GPSO)
+							<ul>
+								<li>Three-parent mask-based crossover (3PMBCX)</li>
+								<li>combination between $x_i$, $p_i$ and $p_g$</li>
+								<li>probabilities of getting a component from a parent is controled by $w_1$, $w_2$ and $w_3$ such that $\sum\limits_{i=1}^{3}{w_i} = 1$</li>
+							</ul>
+						</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Geometric PSO (GPSO)<h3>
+					<img src="images/geometric_PSO.png" alt="Geometric PSO"/>
+				</section>
+				<section>
+					<h3>PSO: common parameters</h3>
+					<ul>
+						<li>population size $\in [20, 60]$</li>
+						<li>$C1, C2 \le 2$</li>
+						<li>neighborhood size $\in [2, n-1]$</li>
+						<li>large neighborhood $→$ slower convergence, possibly better solutions.</li>
+						<li>inertia $\in [0.4, 0.9]$</li>
+					</ul>
 				</section>
 				<section>
 					<h3>Questions?</h3>
